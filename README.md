@@ -38,6 +38,25 @@ ws://127.0.0.1:10274/
 
 ## 快速启动
 
+### 从 GitHub 获取
+
+仓库地址：<https://github.com/Butterfly0v0/oopz-obs-speaking-overlay>
+
+**方式一：Git 克隆（推荐）**
+
+```powershell
+git clone https://github.com/Butterfly0v0/oopz-obs-speaking-overlay.git
+cd oopz-obs-speaking-overlay
+```
+
+**方式二：下载 ZIP**
+
+1. 打开上方仓库链接。
+2. 点击 **Code** → **Download ZIP**。
+3. 解压 ZIP 文件，进入 `oopz-obs-speaking-overlay` 文件夹。
+
+### 安装依赖
+
 首次使用前，先安装 requirements。不熟悉终端命令的用户，直接双击：
 
 ```text
@@ -58,6 +77,8 @@ install-requirements.bat
 python -m pip install -r .\requirements.txt
 ```
 
+### 启动程序
+
 先打开 OOPZ 客户端，并开启 OOPZ 自带屏幕覆盖功能。
 
 不熟悉终端命令的用户，直接双击：
@@ -72,12 +93,13 @@ python -m pip install -r .\requirements.txt
 start-overlay.bat
 ```
 
-也可以通过终端启动：
+也可以通过终端启动（需先进入项目目录）：
 
 ```powershell
-cd .\oopz-obs-speaking-overlay
 python .\backend\app.py
 ```
+
+### 打开叠加层
 
 浏览器或 OBS 中打开：
 
