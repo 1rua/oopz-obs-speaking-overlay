@@ -1,0 +1,10 @@
+- [ ] `configure.bat` 存在且能正确显示交互式配置菜单
+- [ ] `配置设置.bat` 存在且能正确调用 `configure.bat`
+- [ ] 配置脚本在 `config.json` 不存在时自动从 `config.example.json` 复制
+- [ ] 配置脚本能正确读取并显示当前 `config.json` 中的常用配置项值
+- [ ] 配置脚本支持修改 string、number、boolean 类型的配置值
+- [ ] 配置脚本修改后写回 `config.json`，不删除其他字段
+- [ ] `start-overlay.bat` 启动前自动检查并创建 `config.json`
+- [ ] `start-overlay.bat` 启动信息中包含配置修改提示
+- [ ] `启动OOPZ OBS叠加层.bat` 仍能正确透传参数给 `start-overlay.bat`
+- [ ] 所有 BAT 文件使用 UTF-8 编码（`chcp 65001`）且中文显示正常
