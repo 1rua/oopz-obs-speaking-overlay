@@ -53,6 +53,7 @@ class OverlayState:
     connected: bool = True
     voice: bool = False
     last_error: str = ""
+    ever_connected: bool = False
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -61,6 +62,7 @@ class OverlayState:
             "connected": self.connected,
             "voice": self.voice,
             "lastError": self.last_error,
+            "everConnected": self.ever_connected,
             "users": [user.as_dict() for user in self.users],
         }
 
@@ -120,6 +122,7 @@ class OopzOverlayProvider:
     def __init__(self, config: dict[str, Any]) -> None:
         local = config.get("oopzLocal", {})
         self._snapshot = OopzOverlaySnapshot()
+        self._ever_connected = False
         self._lock = threading.Lock()
         self._client = OopzOverlayClient(
             host=str(local.get("host", "127.0.0.1")),
@@ -128,6 +131,7 @@ class OopzOverlayProvider:
             reconnect_delay=float(local.get("reconnectDelaySeconds", 2)),
             on_message=self._handle_message,
             on_status=self._handle_status,
+            on_connect=self._handle_connect,
         )
         self._client.start()
 
@@ -141,6 +145,7 @@ class OopzOverlayProvider:
                 connected=snapshot.connected,
                 voice=snapshot.voice,
                 last_error=snapshot.last_error,
+                ever_connected=self._ever_connected,
             )
 
     def _handle_message(self, message: dict[str, Any]) -> None:
@@ -156,6 +161,10 @@ class OopzOverlayProvider:
             self._snapshot.last_error = error
             if connected or not self._snapshot.members:
                 self._snapshot.updated_at = time.time()
+
+    def _handle_connect(self) -> None:
+        with self._lock:
+            self._ever_connected = True
 
     def _to_overlay_user(self, member: Any) -> OverlayUser:
         user_id = member.raw_id or member.name

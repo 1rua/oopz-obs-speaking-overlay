@@ -44,6 +44,7 @@ class OopzOverlaySnapshot:
     members: list[OopzMember] = field(default_factory=list)
     updated_at: float = field(default_factory=time.time)
     last_error: str = ""
+    ever_connected: bool = False
 
 
 class OopzOverlayClient:
@@ -55,6 +56,7 @@ class OopzOverlayClient:
         reconnect_delay: float = 2,
         on_message: Callable[[dict[str, Any]], None] | None = None,
         on_status: Callable[[bool, str], None] | None = None,
+        on_connect: Callable[[], None] | None = None,
     ) -> None:
         self.host = host
         self.port = port
@@ -62,6 +64,7 @@ class OopzOverlayClient:
         self.reconnect_delay = reconnect_delay
         self.on_message = on_message
         self.on_status = on_status
+        self.on_connect = on_connect
         self._thread: threading.Thread | None = None
         self._stop = threading.Event()
 
@@ -79,6 +82,8 @@ class OopzOverlayClient:
             try:
                 sock, leftover = websocket_handshake(self.host, self.port, self.path)
                 self._emit_status(True, "")
+                if self.on_connect:
+                    self.on_connect()
                 self._read_loop(sock, leftover)
             except Exception as exc:  # noqa: BLE001 - reconnect keeps the overlay available.
                 self._emit_status(False, str(exc))

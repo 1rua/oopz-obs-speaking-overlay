@@ -39,6 +39,18 @@ if errorlevel 1 (
   exit /b 1
 )
 
+echo.
+echo 正在检测 OOPZ 连接...
+
+python ".\scripts\check_oopz.py"
+
+if errorlevel 1 (
+  echo.
+  pause
+  exit /b 1
+)
+
+echo.
 python ".\backend\app.py"
 
 echo.

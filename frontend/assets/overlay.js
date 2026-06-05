@@ -81,7 +81,13 @@ function renderState(state) {
     }
   }
 
-  if (!state.connected && users.length === 0) {
+  const everConnected = state.everConnected ?? false;
+
+  if (!state.connected && !everConnected) {
+    setStatus("正在连接OOPZ...", false);
+  } else if (!state.connected && everConnected) {
+    setStatus("OOPZ连接断开，正在重连...", true);
+  } else if (!state.connected && users.length === 0) {
     setStatus(`Waiting for OOPZ overlay data${state.lastError ? `: ${state.lastError}` : ""}`, true);
   } else if (!state.voice) {
     setStatus("OOPZ voice channel is not active");
